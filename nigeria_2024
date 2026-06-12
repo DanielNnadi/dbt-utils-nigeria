@@ -1,0 +1,25 @@
+SELECT * FROM {{ nigeria_public_holidays(2024) }}
+
+**Add the macros:**
+
+1. Create folder **macros**:
+   - Name: **macros/nigeria_public_holidays.sql**
+   - Paste:
+
+```sql
+{% macro nigeria_public_holidays(year) %}
+
+{% set holidays = [
+    {'name': 'New Year', 'date': year ~ '-01-01'},
+    {'name': 'Workers Day', 'date': year ~ '-05-01'},
+    {'name': 'Independence Day', 'date': year ~ '-10-01'}
+] %}
+
+{% set sql = [] %}
+{% for h in holidays %}
+    {% set _ = sql.append("SELECT '" ~ h.name ~ "' as name, '" ~ h.date ~ "'::date as date") %}
+{% endfor %}
+
+{{ sql | join(' UNION ALL ') }}
+
+{% endmacro %}
