@@ -1,0 +1,4 @@
+name: 'dbt_utils_nigeria'
+version: '0.1.0'
+config-version: 2
+macro-paths: ["macros"]
